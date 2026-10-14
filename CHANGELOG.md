@@ -11,6 +11,12 @@ All notable changes to this project are documented here, newest at the top.
 > renders those three as coloured badges. Bump the patch on every deploy, the minor when
 > asked. Entries predating this convention carry a date but no time.
 
+## v0.10.9 — [Unreleased] Security headers (`fix/security-headers`, 2026-10-14 05:46)
+
+### Added
+- **Every response now carries the security headers.** HSTS (a year, including subdomains), `nosniff`, `X-Frame-Options: DENY`, and a referrer policy — the site is not a frame target, so the clickjacking vector closes outright.
+- **A content policy, in report-only mode, plus `security.txt`.** The policy lists exactly what the site loads — itself and the three tile servers the honeymoon maps draw from — and ships as *report-only* on purpose: a future addition that violates it shows up in the console as a report instead of breaking the page. Promoting it to enforcing is a follow-up once the reports are quiet.
+
 ## v0.10.5 — [Released] Edit offline, and an app that keeps itself current (`main`, 2026-10-10 19:43)
 
 Austin: the site is on my iPhone as an app. When I open it, the entire site should be saved on the phone — the public site and all the admin data, not the photos that aren't used anywhere. Offline I want to be able to make changes in the admin, especially the honeymoon section, and have them pushed to the server when I have a connection. And opening the app should automatically check whether anything on the server changed and update its saved copy.
