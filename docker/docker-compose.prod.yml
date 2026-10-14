@@ -12,7 +12,11 @@ services:
     container_name: wedding-web-prod
     restart: always
     ports:
-      - '3000:3000'
+      # Loopback only: the reverse proxy in front reaches the app on the same
+      # host, and a LAN client should not be able to open the app's port
+      # directly and walk around whatever fronts it (rate limiting, TLS,
+      # whatever else the proxy does). The proxy publishes the public port.
+      - '127.0.0.1:3000:3000'
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}

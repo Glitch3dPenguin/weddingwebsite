@@ -11,6 +11,11 @@ All notable changes to this project are documented here, newest at the top.
 > renders those three as coloured badges. Bump the patch on every deploy, the minor when
 > asked. Entries predating this convention carry a date but no time.
 
+## v0.10.11 — [Unreleased] The app's port stops answering the LAN (`fix/compose-bind`, 2026-10-14 06:02)
+
+### Fixed
+- **The production compose file publishes the app's port to every interface.** `3000:3000` bound the Next process to the machine's LAN, where a neighbour with the address could open it directly and reach the site around whatever fronts it — the proxy's TLS, rate limiting, whatever else. It now binds `127.0.0.1:3000:3000`: the reverse proxy on the same host (or the Docker network's service name) reaches it as before, and the port no longer answers anywhere else. If your setup reaches the app through the published port from another machine, bind that one address instead — the point is the specific address, not the loopback.
+
 ## v0.10.5 — [Released] Edit offline, and an app that keeps itself current (`main`, 2026-10-10 19:43)
 
 Austin: the site is on my iPhone as an app. When I open it, the entire site should be saved on the phone — the public site and all the admin data, not the photos that aren't used anywhere. Offline I want to be able to make changes in the admin, especially the honeymoon section, and have them pushed to the server when I have a connection. And opening the app should automatically check whether anything on the server changed and update its saved copy.
