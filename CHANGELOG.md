@@ -14,7 +14,7 @@ All notable changes to this project are documented here, newest at the top.
 ## v0.10.8 — [Unreleased] Dependency audit clean (`fix/npm-audit-bump`, 2026-10-14 05:23)
 
 ### Fixed
-- **The dependency audit is clean.** `next` moves to 16.4.0 (clearing the image-optimizer, cache-poisoning, and SSRF advisories), `sharp` to 0.35.5 (clearing the libheif and librsvg advisories), `source-map-js` to 1.2.2 (clearing the event-loop DoS), and `nodemailer` to 10.1.0 (clearing the recipient-parsing and DNS-cache advisories). Everything stayed in range except the `nodemailer` 9-to-10 major: the site's mail code uses only `createTransport` and `sendMail`, which 10 keeps. The lint-only dev chain (braces via `eslint-config-next`) is left as-is — its fix needs a breaking bump, and the standalone runtime image does not carry dev dependencies.
+- **The dependency audit is clean.** `next` moves to 16.3.8 (clearing the image-optimizer, cache-poisoning, and SSRF advisories), `sharp` to 0.35.5 (clearing the libheif and librsvg advisories), `source-map-js` to 1.2.2 (clearing the event-loop DoS), and `nodemailer` to 10.1.0 (clearing the recipient-parsing and DNS-cache advisories). Everything stayed in range except the `nodemailer` 9-to-10 major: the site's mail code uses only `createTransport` and `sendMail`, which 10 keeps. The lint-only dev chain (braces via `eslint-config-next`) is left as-is — its fix needs a breaking bump, and the standalone runtime image does not carry dev dependencies.
 
 ## v0.10.5 — [Released] Edit offline, and an app that keeps itself current (`main`, 2026-10-10 19:43)
 
