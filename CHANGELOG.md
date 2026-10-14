@@ -11,6 +11,11 @@ All notable changes to this project are documented here, newest at the top.
 > renders those three as coloured badges. Bump the patch on every deploy, the minor when
 > asked. Entries predating this convention carry a date but no time.
 
+## v0.10.10 — [Unreleased] Rate limits by the real caller (`fix/rate-limit-client-ip`, 2026-10-14 05:55)
+
+### Fixed
+- **The rate limits key off the real caller, not a header the caller typed.** The limiter read the *first* `X-Forwarded-For` entry — the one a script sets itself — so any request could arrive with a fresh identity and walk through the login, RSVP, and link limits as if from a different address every time. It now reads, in order: `cf-connecting-ip` (only a Cloudflare front sets it), the *last* `X-Forwarded-For` entry (the one the nearest proxy appends with the peer it actually saw — correct for nginx, Caddy, Traefik, Zoraxy, any of them), then `x-real-ip`. With no proxy in front there is no trustworthy answer and everything falls to the shared bucket — stricter than before, never looser. It works the same no matter which reverse proxy — or none — fronts the site.
+
 ## v0.10.5 — [Released] Edit offline, and an app that keeps itself current (`main`, 2026-10-10 19:43)
 
 Austin: the site is on my iPhone as an app. When I open it, the entire site should be saved on the phone — the public site and all the admin data, not the photos that aren't used anywhere. Offline I want to be able to make changes in the admin, especially the honeymoon section, and have them pushed to the server when I have a connection. And opening the app should automatically check whether anything on the server changed and update its saved copy.
