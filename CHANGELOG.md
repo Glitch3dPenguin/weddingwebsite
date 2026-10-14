@@ -11,6 +11,11 @@ All notable changes to this project are documented here, newest at the top.
 > renders those three as coloured badges. Bump the patch on every deploy, the minor when
 > asked. Entries predating this convention carry a date but no time.
 
+## v0.10.12 — [Unreleased] The brainstorm scratch stops shipping with the site (`fix/superpowers-cleanup`, 2026-10-14 06:12)
+
+### Changed
+- **`.superpowers/` is now ignored, and the files committed under it are removed.** The Superpowers plugin (the brainstorming workflow used while building the site) drops per-session working files in that directory — HTML design mockups, and its local preview server's log and pid. Nineteen of them had been committed; nothing in the app reads them, and the logs carry paths from the machine they were made on. The directory joins the other agent scratch in `.gitignore` (`.claude/`, `dropbox/`). The `docs/superpowers/` plans and specs are real documentation and stay.
+
 ## v0.10.5 — [Released] Edit offline, and an app that keeps itself current (`main`, 2026-10-10 19:43)
 
 Austin: the site is on my iPhone as an app. When I open it, the entire site should be saved on the phone — the public site and all the admin data, not the photos that aren't used anywhere. Offline I want to be able to make changes in the admin, especially the honeymoon section, and have them pushed to the server when I have a connection. And opening the app should automatically check whether anything on the server changed and update its saved copy.
