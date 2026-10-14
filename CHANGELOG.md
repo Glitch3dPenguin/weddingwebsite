@@ -11,6 +11,18 @@ All notable changes to this project are documented here, newest at the top.
 > renders those three as coloured badges. Bump the patch on every deploy, the minor when
 > asked. Entries predating this convention carry a date but no time.
 
+## v0.10.7 — [Unreleased] RSVP by link (`feat/rsvp-magic-link`, 2026-10-14 03:14)
+
+### Added
+- **RSVPs go by email link.** The guest types their name — anyone in the party can use their own — and the site mails them a link to the address it already holds for their household. The link opens the RSVP form with the household filled in, and submitting sends the link's token along with the answers. A name that is not on the list gets the same answer as one that is, so the page cannot be used to read who is invited.
+- **The link carries a signed token, good for 60 minutes, and nothing else** — no names, no email addresses, no details. It is signed with the same key as the admin session, so there is no new variable to set, and with no key set no links are issued. `SITE_URL` (optional) decides where the link points; the request's own host otherwise.
+- **Sending the link is an online act, and the offline worker knows it.** The link request is on the worker's never-queued list next to the other writes that need the server, so it cannot sit in the outbox and mail on some later morning.
+
+### Security
+- **The name lookup no longer carries the household's details.** The guest verification answered the household's email, phone, party size, party members and existing RSVP to anyone who could read an invitation — the details now travel behind the link, exchanged for the token by the new link-verify route, which re-reads the household from the database (a link dies with an un-invited or deleted household, without saying so). The name lookup's job is now "that name is on the list, and it is this seat of the party."
+- **The write is gated on the link.** An RSVP for a household on the guest list is refused without a valid link minted for that exact household, checked before anything is written — a link for one household cannot open another's RSVP, and an update resolves its household through the existing RSVP row's name, so an id cannot be aimed at a household its row does not belong to. A name the admin never listed is unchanged: it writes nothing and needs no link (the demo instance lives entirely in it).
+- **The link's endpoints carry the rate limits of the other public writes.** A request for a link is five per ten minutes per IP (a verify, twenty), so a script cannot mail the same household in a loop.
+
 ## v0.10.6 — [Unreleased] SMTP email surface (`feat/smtp-compatibility`, 2026-10-14 01:07)
 
 ### Added
